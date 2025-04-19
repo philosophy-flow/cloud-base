@@ -34,3 +34,7 @@ services:
     env_file:
       - ./apps/habitsior-backend/.env
     restart: always
+    
+  fakenewsflush-backend:
+    build: ./apps/fakenewsflush-backend
+    restart: always
