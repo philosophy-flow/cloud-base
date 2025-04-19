@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./pdfs:/var/www/pdfs:ro
+    depends_on:
+      - portfolio
+      - habitsior-frontend
+      - habitsior-backend
+    restart: always
+
+  portfolio:
+    build: ./apps/portfolio
+    restart: always
+
+  habitsior-frontend:
+    build: ./apps/habitsior-frontend
+    restart: always
+    env_file:
+      - ./apps/habitsior-frontend/.env
+
+  habitsior-backend:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.9
+    volumes:
+      - ./apps/habitsior-backend:/app
+    command: "/app/start-prod.sh"
+    env_file:
+      - ./apps/habitsior-backend/.env
+    restart: always
