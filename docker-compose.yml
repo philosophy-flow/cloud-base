@@ -37,6 +37,14 @@ services:
     depends_on:
       - nginx
 
+  onboarcerer-frontend:
+    build: ./apps/onboarcerer-frontend
+    restart: always
+    env_file:
+      - ./apps/onboarcerer-frontend/.env
+    depends_on:
+      - nginx
+
   fakenewsflush-frontend:
     build: ./apps/fakenewsflush-frontend
     restart: always
